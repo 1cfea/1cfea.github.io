@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Foundation English Academy - Napet Palli, Imphal East</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="top-bar">
+            <div class="container">
+                <div class="contact-info">
+                    <span><i class="fas fa-phone"></i> +91 8837011530</span>
+                    <span><i class="fas fa-envelope"></i> infotocfea@gmail.com</span>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <div class="container">
+                <div class="logo">
+                    <img src="https://via.placeholder.com/50x50" alt="CFEA Logo">
+                    <h1>Career Foundation English Academy</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#notices">Notices</a></li>
+                    <li><a href="#results">Results</a></li>
+                    <li><a href="#" class="login-btn" id="loginBtn">Admin Login</a></li>
+                </ul>
+                <div class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Quality Education for a Brighter Future</h2>
+                <p>Government recognized English medium school from Day Care to Class X</p>
+                <a href="#about" class="btn">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="container">
+            <h2>About CFEA</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Career Foundation English Academy (CFEA) is a co-educational government recognized English medium school located in Napet Palli, Imphal East, Manipur (795010).</p>
+                    <p>We provide quality education from Day Care up to Class X, with a proven track record of 100% success rate in board examinations.</p>
+                    <p>Our mission is to nurture young minds with holistic development, combining academic excellence with moral values and life skills.</p>
+                    <div class="achievements">
+                        <div class="achievement-item">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h3>100% Success Rate</h3>
+                        </div>
+                        <div class="achievement-item">
+                            <i class="fas fa-school"></i>
+                            <h3>Day Care to Class X</h3>
+                        </div>
+                        <div class="achievement-item">
+                            <i class="fas fa-award"></i>
+                            <h3>Government Recognized</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="https://via.placeholder.com/500x300" alt="CFEA School Building">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery" id="gallery">
+        <div class="container">
+            <h2>Gallery</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/300x200" alt="School Activity">
+                    <div class="overlay">Annual Day</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/300x200" alt="School Activity">
+                    <div class="overlay">Sports Day</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/300x200" alt="School Activity">
+                    <div class="overlay">Classroom</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/300x200" alt="School Activity">
+                    <div class="overlay">Laboratory</div>
+                </div>
+            </div>
+            <a href="#" class="btn">View More Photos</a>
+        </div>
+    </section>
+
+    <section class="notices" id="notices">
+        <div class="container">
+            <h2>Notices & Announcements</h2>
+            <div class="notice-board">
+                <div class="notice-item">
+                    <h3>Holiday Notice</h3>
+                    <p>School will remain closed on 15th August 2023 for Independence Day celebration.</p>
+                    <span class="notice-date">10 Aug 2023</span>
+                </div>
+                <div class="notice-item">
+                    <h3>Parent-Teacher Meeting</h3>
+                    <p>Quarterly PTM scheduled for 20th August 2023 from 10 AM to 1 PM.</p>
+                    <span class="notice-date">5 Aug 2023</span>
+                </div>
+                <div class="notice-item">
+                    <h3>Annual Sports Day</h3>
+                    <p>Annual Sports Day will be held on 25th August 2023. All students must participate.</p>
+                    <span class="notice-date">1 Aug 2023</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="results" id="results">
+        <div class="container">
+            <h2>Exam Results</h2>
+            <div class="results-container">
+                <div class="result-search">
+                    <h3>Check Your Result</h3>
+                    <form id="resultForm">
+                        <div class="form-group">
+                            <label for="exam">Select Exam:</label>
+                            <select id="exam" required>
+                                <option value="">-- Select Exam --</option>
+                                <option value="quarterly">Quarterly Exam 2023</option>
+                                <option value="halfyearly">Half Yearly Exam 2023</option>
+                                <option value="annual">Annual Exam 2023</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="roll">Roll Number:</label>
+                            <input type="text" id="roll" placeholder="Enter your roll number" required>
+                        </div>
+                        <button type="submit" class="btn">Check Result</button>
+                    </form>
+                </div>
+                <div class="result-display" id="resultDisplay">
+                    <p>Enter your exam details to view results</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Napet Palli, Imphal East, Manipur - 795010</p>
+                    <p><i class="fas fa-phone"></i> +91 8837011530</p>
+                    <p><i class="fas fa-envelope"></i> infotocfea@gmail.com</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                        <li><a href="#notices">Notices</a></li>
+                        <li><a href="#results">Results</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>School Hours</h3>
+                    <p>Monday - Friday: 9:00 AM - 3:00 PM</p>
+                    <p>Saturday: 9:00 AM - 12:00 PM</p>
+                    <p>Sunday: Closed</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2023 Career Foundation English Academy. All Rights Reserved.</p>
+                <p>Created by BK Yumnam | Disclaimer: This website is for informational purposes only. Any discrepancies with official documents are unintentional.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Admin Login</h2>
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
