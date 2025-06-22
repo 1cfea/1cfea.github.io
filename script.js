@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const API_URL = "https://script.google.com/macros/s/AKfycbw8EEB8b3flz9uDckieX_j1fNK-UBwTpRi5X_PLphZV7bDv8Ze4j_uXNXb2T60mPx6R/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbySAr6OPx0oG8bbZt3rVFgLx1Y5EyCn7dHtw0_MRqhswdrUrRcJv4KhTNqXtbruJC0b/exec";
 
     // Mobile nav
     const hamburger = document.querySelector('.hamburger');
