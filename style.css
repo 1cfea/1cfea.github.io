@@ -302,6 +302,19 @@ nav .container {
 .gallery-item:hover img {
     transform: scale(1.1);
 }
+/* Initially hide extra gallery items */
+.hidden-photo {
+    display: none;
+}
+.hidden-photo {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.hidden-photo.show {
+    display: block;
+    opacity: 1;
+}
 
 .overlay {
     position: absolute;
