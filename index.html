@@ -103,15 +103,14 @@
                     <img src="./images/laboratory.jpg" alt="School Activity">
                     <div class="overlay">Laboratory</div>
                 </div>
-            <div class="gallery-item">
+                <div class="gallery-item">
                     <img src="./images/parents.jpg" alt="School Activity">
                     <div class="overlay">Parents Meet</div>
                 </div>
-                 <div class="gallery-item">
+                <div class="gallery-item">
                     <img src="./images/Vacination.jpg" alt="School Activity">
                     <div class="overlay">Vaccination Programme</div>
                 </div>
-                  <!-- Hidden initially -->
                 <div class="gallery-item hidden-photo">
                     <img src="./images/Excr.JPG" alt="School Activity">
                     <div class="overlay">Annual Educational Excursion</div>
@@ -120,7 +119,7 @@
                     <img src="./images/Combine.jpg" alt="School Activity">
                     <div class="overlay">Workshop</div>
                 </div>
-                 <div class="gallery-item hidden-photo">
+                <div class="gallery-item hidden-photo">
                     <img src="./images/IMG_20231104_120923.jpg" alt="School Activity">
                     <div class="overlay">Quiz Competition</div>
                 </div>
@@ -171,24 +170,24 @@
                                 <option value="Fourth Semester">Fourth Semester Exam 2025</option>
                             </select>
                         </div>
-                           <div class="form-group">
+                        <div class="form-group">
                             <label for="Class">Class:</label>
-                               <select id="Class" required>
-    <option value="">-- Select Class --</option>
-    <option value="Pre Nursery">Pre Nursery</option>
-    <option value="Nursery">Nursery</option>
-    <option value="KG">KG</option>
-    <option value="Class I">Class I</option>
-    <option value="Class II">Class II</option>
-    <option value="Class III">Class III</option>
-    <option value="Class IV">Class IV</option>
-    <option value="Class V">Class V</option>
-    <option value="Class VI">Class VI</option>
-    <option value="Class VII">Class VII</option>
-    <option value="Class VIII">Class VIII</option>
-    <option value="Class IX">Class IX</option>
-    <option value="Class X">Class X</option>
-</select>
+                            <select id="Class" required>
+                                <option value="">-- Select Class --</option>
+                                <option value="Pre Nursery">Pre Nursery</option>
+                                <option value="Nursery">Nursery</option>
+                                <option value="KG">KG</option>
+                                <option value="Class I">Class I</option>
+                                <option value="Class II">Class II</option>
+                                <option value="Class III">Class III</option>
+                                <option value="Class IV">Class IV</option>
+                                <option value="Class V">Class V</option>
+                                <option value="Class VI">Class VI</option>
+                                <option value="Class VII">Class VII</option>
+                                <option value="Class VIII">Class VIII</option>
+                                <option value="Class IX">Class IX</option>
+                                <option value="Class X">Class X</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="roll">Roll Number:</label>
@@ -259,135 +258,5 @@
     </div>
 
     <script src="script.js"></script>
-<script>
-// === MODAL HANDLING ===
-const loginBtn = document.getElementById("loginBtn");
-const loginModal = document.getElementById("loginModal");
-const closeBtn = document.querySelector(".close-btn");
-
-// Open modal on button click
-loginBtn.addEventListener("click", () => {
-  loginModal.style.display = "block";
-});
-
-// Close modal on "×" click
-closeBtn.addEventListener("click", () => {
-  loginModal.style.display = "none";
-});
-
-// Close modal when clicking outside of it
-window.addEventListener("click", (e) => {
-  if (e.target === loginModal) {
-    loginModal.style.display = "none";
-  }
-});
-</script>
-    <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbzRQ6bbcR_qS1IREhd0GapZflFJc0oalNmY-GyBrQuoqmiqrzBIs72NfDRn5V_WpTSK/exec";
-
-// === Teacher Login ===
-async function loginTeacher(email, password) {
-  const res = await fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify({ type: "login", email, password }),
-    headers: { "Content-Type": "application/json" }
-  });
-  const result = await res.json();
-  if (result.success) {
-    localStorage.setItem("teacher", JSON.stringify(result));
-    alert("Login successful!");
-    showUploadForm(result.allowedClasses);
-  } else {
-    alert("Invalid credentials");
-  }
-}
-
-// === Upload Marks ===
-async function uploadMarks(className, rollNo, marksObj) {
-  const res = await fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify({
-      type: "update",
-      className,
-      rollNo,
-      updates: marksObj
-    }),
-    headers: { "Content-Type": "application/json" }
-  });
-  const data = await res.json();
-  alert(data.message || (data.success ? "Update successful!" : "Update failed"));
-}
-
-// === Fetch Results for Students ===
-async function fetchResult(className, rollNo) {
-  const res = await fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify({
-      type: "fetchResult",
-      className,
-      roll: rollNo
-    }),
-    headers: { "Content-Type": "application/json" }
-  });
-  const result = await res.json();
-
-  const display = document.getElementById("resultDisplay");
-  if (result.success) {
-    display.innerHTML = `
-      <h3>Result for ${result["Name"] || "Student"}</h3>
-      <p>Roll No: ${result["Roll No"]}</p>
-      <p>Marks: ${result["Marks"]}</p>
-      <p>Grade: ${result["Grade"] || "-"}</p>
-      <p>Status: ${result["Status"] || "-"}</p>
-    `;
-  } else {
-    display.innerHTML = `<p class="error">${result.message}</p>`;
-  }
-}
-
-// === Trigger Login (hook to form submission) ===
-document.getElementById("adminLoginForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-  const email = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-  loginTeacher(email, password);
-});
-
-// === Trigger Fetch (hook to result form) ===
-document.getElementById("resultForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-  const roll = document.getElementById("roll").value;
-  const className = document.getElementById("Class").value;
-  fetchResult(className, roll);
-});
-
-// === Upload Form Display for Teachers (you can place this in a modal or separate section)
-function showUploadForm(allowedClasses) {
-  const uploadSection = document.createElement("section");
-  uploadSection.innerHTML = `
-    <h3>Upload Student Marks</h3>
-    <form id="uploadForm">
-      <label>Select Class:</label>
-      <select id="uploadClass" required>
-        ${allowedClasses.map(c => `<option value="${c}">${c}</option>`).join("")}
-      </select><br>
-      <label>Roll No:</label>
-      <input type="text" id="uploadRoll" required><br>
-      <label>Marks:</label>
-      <input type="text" id="uploadMarks" required><br>
-      <button type="submit">Update Marks</button>
-    </form>
-  `;
-  document.body.appendChild(uploadSection);
-
-  document.getElementById("uploadForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-    const cls = document.getElementById("uploadClass").value;
-    const roll = document.getElementById("uploadRoll").value;
-    const marks = document.getElementById("uploadMarks").value;
-    uploadMarks(cls, roll, { "Marks": marks });
-  });
-}
-</script>
 </body>
 </html>
