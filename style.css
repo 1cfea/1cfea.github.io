@@ -275,7 +275,6 @@ nav .container {
     font-size: 1.2rem;
     color: var(--secondary-color);
 }
-
 /* Gallery Section */
 .gallery-grid {
     display: grid;
@@ -290,6 +289,8 @@ nav .container {
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     height: 200px;
+    opacity: 1;
+    transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
 .gallery-item img {
@@ -302,20 +303,20 @@ nav .container {
 .gallery-item:hover img {
     transform: scale(1.1);
 }
-/* Initially hide extra gallery items */
+
+/* Hide initially */
 .hidden-photo {
     display: none;
-}
-.hidden-photo {
     opacity: 0;
-    transition: opacity 0.5s ease;
 }
 
+/* Fade-in when shown */
 .hidden-photo.show {
     display: block;
     opacity: 1;
 }
 
+/* Overlay */
 .overlay {
     position: absolute;
     bottom: 0;
@@ -331,6 +332,8 @@ nav .container {
 .gallery-item:hover .overlay {
     transform: translateY(0);
 }
+
+
 
 /* Notices Section */
 .notice-board {
