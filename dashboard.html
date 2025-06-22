@@ -5,42 +5,71 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Teacher Dashboard</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Added styles for edit features */
+    .editable {
+      background-color: #fffde7; /* Highlight editable cells */
+      cursor: pointer;
+    }
+    .save-btn {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+    }
+    .grade-select {
+      padding: 4px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+  </style>
   <script>
-    // Protect dashboard access
-    if (!sessionStorage.getItem('teacherEmail')) {
+    // Auth check (using localStorage)
+    const teacherEmail = localStorage.getItem('teacherEmail');
+    const allowedClasses = JSON.parse(localStorage.getItem('allowedClasses') || '[]');
+    if (!teacherEmail || allowedClasses.length === 0) {
       window.location.href = 'index.html';
     }
 
+    const API_URL = "https://script.google.com/macros/s/AKfycbzRQ6bbcR_qS1IREhd0GapZflFJc0oalNmY-GyBrQuoqmiqrzBIs72NfDRn5V_WpTSK/exec";
+
+    // Fetch class data
     async function fetchClassData(className) {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbzRQ6bbcR_qS1IREhd0GapZflFJc0oalNmY-GyBrQuoqmiqrzBIs72NfDRn5V_WpTSK/exec', {
+      const response = await fetch(API_URL, {
         method: 'POST',
-        body: JSON.stringify({
-          type: 'getClassData',
-          className: className
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'getClassData', className })
       });
       return await response.json();
     }
 
-    async function updateStudentMarks(className, rollNo, updates) {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbzRQ6bbcR_qS1IREhd0GapZflFJc0oalNmY-GyBrQuoqmiqrzBIs72NfDRn5V_WpTSK/exec', {
+    // Update any student field
+    async function updateStudent(className, rollNo, updates) {
+      const response = await fetch(API_URL, {
         method: 'POST',
-        body: JSON.stringify({
-          type: 'updateStudent',
-          className,
-          rollNo,
-          updates
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'update', className, rollNo, updates })
       });
       return await response.json();
+    }
+
+    // Calculate grade based on marks (optional)
+    function calculateGrade(marks) {
+      if (marks >= 90) return 'A+';
+      if (marks >= 80) return 'A';
+      if (marks >= 70) return 'B';
+      if (marks >= 60) return 'C';
+      if (marks >= 50) return 'D';
+      return 'F';
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
-      const email = sessionStorage.getItem('teacherEmail');
-      const allowed = JSON.parse(sessionStorage.getItem('allowedClasses')) || [];
+      document.getElementById('teacherName').textContent = teacherEmail;
       const container = document.getElementById('dashboard');
 
-      for (const className of allowed) {
+      // Load data for each allowed class
+      for (const className of allowedClasses) {
         const data = await fetchClassData(className);
         const section = document.createElement('section');
         section.innerHTML = `<h2>${className}</h2>`;
@@ -48,44 +77,99 @@
         const table = document.createElement('table');
         const thead = document.createElement('thead');
         const tr = document.createElement('tr');
+        
+        // Table headers
         data.headers.forEach(h => {
           const th = document.createElement('th');
           th.textContent = h;
           tr.appendChild(th);
         });
-        tr.innerHTML += '<th>Update Marks</th>';
+        tr.innerHTML += '<th>Actions</th>';
         thead.appendChild(tr);
         table.appendChild(thead);
 
+        // Student rows
         const tbody = document.createElement('tbody');
-        data.students.forEach(stu => {
+        data.students.forEach(student => {
           const row = document.createElement('tr');
-          data.headers.forEach(h => {
+          data.headers.forEach(header => {
             const td = document.createElement('td');
-            td.textContent = stu[h];
+            
+            // Make Marks, Grade, and Status editable
+            if (header === 'Marks') {
+              td.innerHTML = `
+                <input 
+                  type="number" 
+                  value="${student[header] || ''}" 
+                  class="editable-marks" 
+                  data-roll="${student['Roll No']}"
+                  min="0" max="100"
+                >
+              `;
+              td.classList.add('editable');
+            } 
+            else if (header === 'Grade') {
+              td.innerHTML = `
+                <select class="grade-select" data-roll="${student['Roll No']}">
+                  <option value="A+" ${student[header] === 'A+' ? 'selected' : ''}>A+</option>
+                  <option value="A" ${student[header] === 'A' ? 'selected' : ''}>A</option>
+                  <option value="B" ${student[header] === 'B' ? 'selected' : ''}>B</option>
+                  <option value="C" ${student[header] === 'C' ? 'selected' : ''}>C</option>
+                  <option value="D" ${student[header] === 'D' ? 'selected' : ''}>D</option>
+                  <option value="F" ${student[header] === 'F' ? 'selected' : ''}>F</option>
+                </select>
+              `;
+            }
+            else if (header === 'Status') {
+              td.innerHTML = `
+                <select class="status-select" data-roll="${student['Roll No']}">
+                  <option value="Pass" ${student[header] === 'Pass' ? 'selected' : ''}>Pass</option>
+                  <option value="Fail" ${student[header] === 'Fail' ? 'selected' : ''}>Fail</option>
+                  <option value="Pending" ${student[header] === 'Pending' ? 'selected' : ''}>Pending</option>
+                </select>
+              `;
+            }
+            else {
+              td.textContent = student[header] || '-';
+            }
             row.appendChild(td);
           });
-          const tdUpdate = document.createElement('td');
-          tdUpdate.innerHTML = `
-            <input type="number" placeholder="New Marks" id="input-${className}-${stu['Roll No']}" style="width: 80px;"/>
-            <button onclick="submitMarks('${className}', '${stu['Roll No']}')">Save</button>
+
+          // Save button for the row
+          const actionTd = document.createElement('td');
+          actionTd.innerHTML = `
+            <button class="save-btn" 
+              onclick="saveChanges('${className}', '${student['Roll No']}')">
+              Save
+            </button>
           `;
-          row.appendChild(tdUpdate);
+          row.appendChild(actionTd);
           tbody.appendChild(row);
         });
+
         table.appendChild(tbody);
         section.appendChild(table);
         container.appendChild(section);
       }
     });
 
-    async function submitMarks(className, rollNo) {
-      const input = document.getElementById(`input-${className}-${rollNo}`);
-      const value = input.value;
-      if (!value) return alert('Please enter marks');
-      const res = await updateStudentMarks(className, rollNo, { 'Marks': value });
-      alert(res.message);
-      location.reload();
+    // Save all edits for a student
+    async function saveChanges(className, rollNo) {
+      const row = document.querySelector(`[data-roll="${rollNo}"]`).closest('tr');
+      const updates = {
+        Marks: row.querySelector('.editable-marks').value,
+        Grade: row.querySelector('.grade-select').value,
+        Status: row.querySelector('.status-select').value
+      };
+
+      // Auto-calculate grade if marks are changed (optional)
+      if (updates.Marks) {
+        updates.Grade = calculateGrade(parseInt(updates.Marks));
+        row.querySelector('.grade-select').value = updates.Grade;
+      }
+
+      const res = await updateStudent(className, rollNo, updates);
+      alert(res.message || (res.success ? 'Saved!' : 'Failed to save'));
     }
   </script>
 </head>
@@ -93,7 +177,7 @@
   <header>
     <h1>Teacher Dashboard</h1>
     <p>Welcome, <span id="teacherName"></span></p>
-    <button onclick="sessionStorage.clear(); location.href='index.html'">Logout</button>
+    <button onclick="localStorage.clear(); location.href='index.html'">Logout</button>
   </header>
   <main id="dashboard"></main>
 </body>
