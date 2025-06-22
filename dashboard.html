@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+    // Protect dashboard access
+    if (!sessionStorage.getItem('teacherEmail')) {
+      window.location.href = 'index.html';
+    }
+
+    async function fetchClassData(className) {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbzRQ6bbcR_qS1IREhd0GapZflFJc0oalNmY-GyBrQuoqmiqrzBIs72NfDRn5V_WpTSK/exec', {
+        method: 'POST',
+        body: JSON.stringify({
+          type: 'getClassData',
+          className: className
+        })
+      });
+      return await response.json();
+    }
+
+    async function updateStudentMarks(className, rollNo, updates) {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbzRQ6bbcR_qS1IREhd0GapZflFJc0oalNmY-GyBrQuoqmiqrzBIs72NfDRn5V_WpTSK/exec', {
+        method: 'POST',
+        body: JSON.stringify({
+          type: 'updateStudent',
+          className,
+          rollNo,
+          updates
+        })
+      });
+      return await response.json();
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const email = sessionStorage.getItem('teacherEmail');
+      const allowed = JSON.parse(sessionStorage.getItem('allowedClasses')) || [];
+      const container = document.getElementById('dashboard');
+
+      for (const className of allowed) {
+        const data = await fetchClassData(className);
+        const section = document.createElement('section');
+        section.innerHTML = `<h2>${className}</h2>`;
+
+        const table = document.createElement('table');
+        const thead = document.createElement('thead');
+        const tr = document.createElement('tr');
+        data.headers.forEach(h => {
+          const th = document.createElement('th');
+          th.textContent = h;
+          tr.appendChild(th);
+        });
+        tr.innerHTML += '<th>Update Marks</th>';
+        thead.appendChild(tr);
+        table.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+        data.students.forEach(stu => {
+          const row = document.createElement('tr');
+          data.headers.forEach(h => {
+            const td = document.createElement('td');
+            td.textContent = stu[h];
+            row.appendChild(td);
+          });
+          const tdUpdate = document.createElement('td');
+          tdUpdate.innerHTML = `
+            <input type="number" placeholder="New Marks" id="input-${className}-${stu['Roll No']}" style="width: 80px;"/>
+            <button onclick="submitMarks('${className}', '${stu['Roll No']}')">Save</button>
+          `;
+          row.appendChild(tdUpdate);
+          tbody.appendChild(row);
+        });
+        table.appendChild(tbody);
+        section.appendChild(table);
+        container.appendChild(section);
+      }
+    });
+
+    async function submitMarks(className, rollNo) {
+      const input = document.getElementById(`input-${className}-${rollNo}`);
+      const value = input.value;
+      if (!value) return alert('Please enter marks');
+      const res = await updateStudentMarks(className, rollNo, { 'Marks': value });
+      alert(res.message);
+      location.reload();
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <h1>Teacher Dashboard</h1>
+    <p>Welcome, <span id="teacherName"></span></p>
+    <button onclick="sessionStorage.clear(); location.href='index.html'">Logout</button>
+  </header>
+  <main id="dashboard"></main>
+</body>
+</html>
