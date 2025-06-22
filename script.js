@@ -108,3 +108,21 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('nav').classList.add('sticky');
     }
 });
+document.addEventListener("DOMContentLoaded", function () {
+    const viewMoreBtn = document.getElementById("viewMoreBtn");
+    const hiddenPhotos = document.querySelectorAll(".hidden-photo");
+
+    viewMoreBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        hiddenPhotos.forEach(item => {
+            // Use this if you're using fade-in CSS
+            item.classList.add("show");
+
+            // Or just reveal them without animation:
+            // item.style.display = "block";
+        });
+
+        // Optionally hide the button
+        viewMoreBtn.style.display = "none";
+    });
+});
