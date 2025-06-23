@@ -61,7 +61,10 @@
     const allowedClasses = JSON.parse(localStorage.getItem('allowedClasses') || '[]');
     if (!teacherEmail || allowedClasses.length === 0) {
       window.location.href = 'index.html';
+    throw new Error("Not authenticated"); // Stop execution
     }
+
+    document.getElementById('teacherName').textContent = teacherEmail;
 
     const API_URL = "https://script.google.com/macros/s/AKfycbxb9iTyq099STXxYiwKkbsOeC7ewbGn7Oco0C8ah0Q0AYdp_LZ3q7jaf6ZYF58fXyE1/exec"; // Replace with your actual deployed Apps Script URL
 
