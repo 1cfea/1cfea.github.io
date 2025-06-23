@@ -6,9 +6,8 @@
   <title>Teacher Dashboard</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Added styles for edit features */
     .editable {
-      background-color: #fffde7; /* Highlight editable cells */
+      background-color: #fffde7;
       cursor: pointer;
     }
     .save-btn {
@@ -17,44 +16,55 @@
       border: none;
       padding: 5px 10px;
       border-radius: 4px;
+      cursor: pointer;
     }
-    .grade-select {
+    .grade-select, .status-select, .exam-name-select {
       padding: 4px;
       border-radius: 4px;
       border: 1px solid #ddd;
     }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 6px;
+      text-align: center;
+    }
+    section {
+      margin-bottom: 40px;
+    }
+    header {
+      background-color: #eee;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    h1 {
+      margin: 0;
+    }
   </style>
+</head>
+<body>
+  <header>
+    <h1>Teacher Dashboard</h1>
+    <p>Welcome, <span id="teacherName"></span></p>
+    <button onclick="localStorage.clear(); location.href='index.html'">Logout</button>
+  </header>
+  <main id="dashboard"></main>
+
   <script>
-    // Auth check (using localStorage)
     const teacherEmail = localStorage.getItem('teacherEmail');
     const allowedClasses = JSON.parse(localStorage.getItem('allowedClasses') || '[]');
     if (!teacherEmail || allowedClasses.length === 0) {
       window.location.href = 'index.html';
     }
 
-    const API_URL = "https://script.google.com/macros/s/AKfycbzRQ6bbcR_qS1IREhd0GapZflFJc0oalNmY-GyBrQuoqmiqrzBIs72NfDRn5V_WpTSK/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbyYNcuu54K43q5Qhl1oMnOI9M4uq4_rltJzy2ydqIVwysGf6sQ5M9jY9rvjwlfu4oRl/exec"; // Replace with your actual deployed Apps Script URL
 
-    // Fetch class data
-    async function fetchClassData(className) {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'getClassData', className })
-      });
-      return await response.json();
-    }
-
-    // Update any student field
-    async function updateStudent(className, rollNo, updates) {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'update', className, rollNo, updates })
-      });
-      return await response.json();
-    }
-
-    // Calculate grade based on marks (optional)
     function calculateGrade(marks) {
       if (marks >= 90) return 'A+';
       if (marks >= 80) return 'A';
@@ -64,11 +74,33 @@
       return 'F';
     }
 
+    function getStatus(marks) {
+      if (marks === '' || isNaN(marks)) return 'Pending';
+      return marks >= 35 ? 'Pass' : 'Fail';
+    }
+
+    async function fetchClassData(className) {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'getClassData', className })
+      });
+      return await response.json();
+    }
+
+    async function updateStudent(className, rollNo, updates) {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'update', className, rollNo, updates })
+      });
+      return await response.json();
+    }
+
     document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('teacherName').textContent = teacherEmail;
       const container = document.getElementById('dashboard');
 
-      // Load data for each allowed class
       for (const className of allowedClasses) {
         const data = await fetchClassData(className);
         const section = document.createElement('section');
@@ -77,8 +109,7 @@
         const table = document.createElement('table');
         const thead = document.createElement('thead');
         const tr = document.createElement('tr');
-        
-        // Table headers
+
         data.headers.forEach(h => {
           const th = document.createElement('th');
           th.textContent = h;
@@ -88,14 +119,12 @@
         thead.appendChild(tr);
         table.appendChild(thead);
 
-        // Student rows
         const tbody = document.createElement('tbody');
         data.students.forEach(student => {
           const row = document.createElement('tr');
           data.headers.forEach(header => {
             const td = document.createElement('td');
-            
-            // Make Marks, Grade, and Status editable
+
             if (header === 'Marks') {
               td.innerHTML = `
                 <input 
@@ -104,10 +133,9 @@
                   class="editable-marks" 
                   data-roll="${student['Roll No']}"
                   min="0" max="100"
-                >
-              `;
+                >`;
               td.classList.add('editable');
-            } 
+            }
             else if (header === 'Grade') {
               td.innerHTML = `
                 <select class="grade-select" data-roll="${student['Roll No']}">
@@ -117,8 +145,7 @@
                   <option value="C" ${student[header] === 'C' ? 'selected' : ''}>C</option>
                   <option value="D" ${student[header] === 'D' ? 'selected' : ''}>D</option>
                   <option value="F" ${student[header] === 'F' ? 'selected' : ''}>F</option>
-                </select>
-              `;
+                </select>`;
             }
             else if (header === 'Status') {
               td.innerHTML = `
@@ -126,23 +153,32 @@
                   <option value="Pass" ${student[header] === 'Pass' ? 'selected' : ''}>Pass</option>
                   <option value="Fail" ${student[header] === 'Fail' ? 'selected' : ''}>Fail</option>
                   <option value="Pending" ${student[header] === 'Pending' ? 'selected' : ''}>Pending</option>
-                </select>
-              `;
+                </select>`;
+            }
+            else if (header === 'Exam Name') {
+              td.innerHTML = `
+                <select class="exam-name-select" data-roll="${student['Roll No']}">
+                  <option value="">-- Select Exam --</option>
+                  <option value="First Semester" ${student[header] === 'First Semester' ? 'selected' : ''}>First Semester</option>
+                  <option value="Second Semester" ${student[header] === 'Second Semester' ? 'selected' : ''}>Second Semester</option>
+                  <option value="First Periodic" ${student[header] === 'First Periodic' ? 'selected' : ''}>First Periodic</option>
+                  <option value="Second Periodic" ${student[header] === 'Second Periodic' ? 'selected' : ''}>Second Periodic</option>
+                  <option value="Fourth Semester" ${student[header] === 'Fourth Semester' ? 'selected' : ''}>Fourth Semester</option>
+                </select>`;
             }
             else {
               td.textContent = student[header] || '-';
             }
+
             row.appendChild(td);
           });
 
-          // Save button for the row
           const actionTd = document.createElement('td');
           actionTd.innerHTML = `
             <button class="save-btn" 
               onclick="saveChanges('${className}', '${student['Roll No']}')">
               Save
-            </button>
-          `;
+            </button>`;
           row.appendChild(actionTd);
           tbody.appendChild(row);
         });
@@ -153,32 +189,22 @@
       }
     });
 
-    // Save all edits for a student
     async function saveChanges(className, rollNo) {
       const row = document.querySelector(`[data-roll="${rollNo}"]`).closest('tr');
+      const marks = parseFloat(row.querySelector('.editable-marks').value);
       const updates = {
-        Marks: row.querySelector('.editable-marks').value,
-        Grade: row.querySelector('.grade-select').value,
-        Status: row.querySelector('.status-select').value
+        Marks: marks,
+        Grade: calculateGrade(marks),
+        Status: getStatus(marks),
+        "Exam Name": row.querySelector('.exam-name-select')?.value || ''
       };
 
-      // Auto-calculate grade if marks are changed (optional)
-      if (updates.Marks) {
-        updates.Grade = calculateGrade(parseInt(updates.Marks));
-        row.querySelector('.grade-select').value = updates.Grade;
-      }
+      row.querySelector('.grade-select').value = updates.Grade;
+      row.querySelector('.status-select').value = updates.Status;
 
       const res = await updateStudent(className, rollNo, updates);
       alert(res.message || (res.success ? 'Saved!' : 'Failed to save'));
     }
   </script>
-</head>
-<body>
-  <header>
-    <h1>Teacher Dashboard</h1>
-    <p>Welcome, <span id="teacherName"></span></p>
-    <button onclick="localStorage.clear(); location.href='index.html'">Logout</button>
-  </header>
-  <main id="dashboard"></main>
 </body>
 </html>
