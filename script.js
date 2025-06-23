@@ -61,46 +61,42 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ==================== ADMIN LOGIN ====================
-    const adminLoginForm = document.getElementById("adminLoginForm");
-    if (adminLoginForm) {
-        adminLoginForm.addEventListener("submit", async function (e) {
-            e.preventDefault();
-            const email = document.getElementById("username").value.trim();
-            const password = document.getElementById("password").value;
+  // In script.js, modify the adminLoginForm submit handler:
+if (adminLoginForm) {
+    adminLoginForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const email = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value;
 
-            try {
-                const res = await fetch(API_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ 
-                        type: "login", 
-                        email, 
-                        password 
-                    })
-                });
-                
-                const result = await res.json();
-                
-                if (result.success) {
-                    localStorage.setItem("teacherEmail", result.email);
-                    localStorage.setItem("allowedClasses", JSON.stringify(result.allowedClasses));
-                    if (loginModal) loginModal.style.display = 'none';
-                    alert("Login Successful!");
-                    if (window.location.pathname.includes('dashboard.html')) {
-                        window.location.reload();
-                    } else {
-                        showUploadForm(result.allowedClasses);
-                    }
-                } else {
-                    alert(result.message || "Invalid Credentials!");
-                }
-            } catch (error) {
-                console.error("Login error:", error);
-                alert("Server error. Please try again later.");
+        try {
+            const res = await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    type: "login", 
+                    email, 
+                    password 
+                })
+            });
+            
+            const result = await res.json();
+            
+            if (result.success) {
+                localStorage.setItem("teacherEmail", result.email);
+                localStorage.setItem("allowedClasses", JSON.stringify(result.allowedClasses));
+                if (loginModal) loginModal.style.display = 'none';
+                alert("Login Successful!");
+                // Always redirect to dashboard after successful login
+                window.location.href = "dashboard.html";
+            } else {
+                alert(result.message || "Invalid Credentials!");
             }
-        });
-    }
-
+        } catch (error) {
+            console.error("Login error:", error);
+            alert("Server error. Please try again later.");
+        }
+    });
+}
     // ==================== RESULT FETCHING ====================
     const resultForm = document.getElementById("resultForm");
     if (resultForm) {
