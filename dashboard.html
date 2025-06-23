@@ -134,14 +134,14 @@
                   type="number" 
                   value="${student[header] || ''}" 
                   class="editable-marks" 
-                  data-roll="${student['Roll No']}"
+                  data-roll="${student['Roll No.']}"
                   min="0" max="100"
                 >`;
               td.classList.add('editable');
             }
             else if (header === 'Grade') {
               td.innerHTML = `
-                <select class="grade-select" data-roll="${student['Roll No']}">
+                <select class="grade-select" data-roll="${student['Roll No.']}">
                   <option value="A+" ${student[header] === 'A+' ? 'selected' : ''}>A+</option>
                   <option value="A" ${student[header] === 'A' ? 'selected' : ''}>A</option>
                   <option value="B" ${student[header] === 'B' ? 'selected' : ''}>B</option>
@@ -152,7 +152,7 @@
             }
             else if (header === 'Status') {
               td.innerHTML = `
-                <select class="status-select" data-roll="${student['Roll No']}">
+                <select class="status-select" data-roll="${student['Roll No.']}">
                   <option value="Pass" ${student[header] === 'Pass' ? 'selected' : ''}>Pass</option>
                   <option value="Fail" ${student[header] === 'Fail' ? 'selected' : ''}>Fail</option>
                   <option value="Pending" ${student[header] === 'Pending' ? 'selected' : ''}>Pending</option>
@@ -160,7 +160,7 @@
             }
             else if (header === 'Exam Name') {
               td.innerHTML = `
-                <select class="exam-name-select" data-roll="${student['Roll No']}">
+                <select class="exam-name-select" data-roll="${student['Roll No.']}">
                   <option value="">-- Select Exam --</option>
                   <option value="First Semester" ${student[header] === 'First Semester' ? 'selected' : ''}>First Semester</option>
                   <option value="Second Semester" ${student[header] === 'Second Semester' ? 'selected' : ''}>Second Semester</option>
@@ -179,7 +179,7 @@
           const actionTd = document.createElement('td');
           actionTd.innerHTML = `
             <button class="save-btn" 
-              onclick="saveChanges('${className}', '${student['Roll No']}')">
+              onclick="saveChanges('${className}', '${student['Roll No.']}')">
               Save
             </button>`;
           row.appendChild(actionTd);
