@@ -618,3 +618,92 @@ footer {
     h2 {
         font-size: 1.8rem;
     }
+/* ================= DASHBOARD STYLES ================= */
+main#dashboard {
+    padding: 30px 15px;
+}
+
+main#dashboard section {
+    margin-bottom: 50px;
+}
+
+main#dashboard table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+main#dashboard th, main#dashboard td {
+    padding: 12px 10px;
+    border: 1px solid #eee;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+main#dashboard th {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
+}
+
+main#dashboard td select,
+main#dashboard td input {
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+    width: 100%;
+    max-width: 120px;
+}
+
+main#dashboard .save-btn {
+    padding: 6px 12px;
+    margin-top: 5px;
+    background: var(--success-color);
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+main#dashboard .save-btn:hover {
+    background: #27ae60;
+}
+
+.editable {
+    background-color: #fffbe6;
+}
+
+/* Upload Form Styling */
+.upload-section {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    margin-top: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.upload-section h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+}
+
+.upload-section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.upload-section input,
+.upload-section select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
