@@ -1,15 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const API_URL = "https://script.google.com/macros/s/AKfycbzRQ6bbcR_qS1IREhd0GapZflFJc0oalNmY-GyBrQuoqmiqrzBIs72NfDRn5V_WpTSK/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbyYNcuu54K43q5Qhl1oMnOI9M4uq4_rltJzy2ydqIVwysGf6sQ5M9jY9rvjwlfu4oRl/exec";
 
     // ==================== NAVIGATION ====================
-    // Mobile nav toggle
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
     if (hamburger) {
         hamburger.addEventListener('click', () => navLinks.classList.toggle('active'));
     }
 
-    // Smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -26,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Sticky header
     window.addEventListener('scroll', () => {
         const header = document.querySelector('nav');
         if (header) {
@@ -35,7 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // ==================== GALLERY ====================
-    // View More Photos
     const viewMoreBtn = document.getElementById("viewMoreBtn");
     const hiddenPhotos = document.querySelectorAll(".hidden-photo");
     if (viewMoreBtn) {
@@ -52,16 +48,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const closeBtn = document.querySelector('.close-btn');
 
     if (loginBtn && loginModal) {
-        // Open modal
         loginBtn.addEventListener('click', (e) => {
             e.preventDefault();
             loginModal.style.display = 'flex';
         });
 
-        // Close modal
         closeBtn.addEventListener('click', () => loginModal.style.display = 'none');
         
-        // Close when clicking outside
         window.addEventListener('click', (e) => {
             if (e.target === loginModal) loginModal.style.display = 'none';
         });
@@ -89,15 +82,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const result = await res.json();
                 
                 if (result.success) {
-                    // Store session data
                     localStorage.setItem("teacherEmail", result.email);
                     localStorage.setItem("allowedClasses", JSON.stringify(result.allowedClasses));
-                    
-                    // Close modal and redirect
                     if (loginModal) loginModal.style.display = 'none';
                     alert("Login Successful!");
-                    
-                    // Redirect to dashboard or show upload form
                     if (window.location.pathname.includes('dashboard.html')) {
                         window.location.reload();
                     } else {
@@ -153,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ==================== UPLOAD MARKS (FOR TEACHERS) ====================
+    // ==================== UPLOAD MARKS ====================
     function showUploadForm(allowedClasses) {
         if (!allowedClasses || allowedClasses.length === 0) return;
         if (document.getElementById("uploadForm")) return;
@@ -203,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     "Update failed"));
                 
                 if (data.success) {
-                    this.reset(); // Clear form after success
+                    this.reset();
                 }
             } catch (error) {
                 console.error("Update error:", error);
@@ -212,7 +200,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Auto-show upload form if teacher is already logged in
     const teacherEmail = localStorage.getItem("teacherEmail");
     const allowedClasses = JSON.parse(localStorage.getItem("allowedClasses") || "[]");
     if (teacherEmail && allowedClasses.length > 0) {
