@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login API Test</title>
+</head>
+<body>
+  <h2>Login API Test</h2>
+  <form id="loginForm">
+    <label>Email: <input type="text" id="email" required></label><br><br>
+    <label>Password: <input type="password" id="password" required></label><br><br>
+    <button type="submit">Test Login</button>
+  </form>
+
+  <pre id="result"></pre>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbxUADdwYm-rHIFggwPxKioYpSd4uMEKGtd-gL773pNyKcUeJ_hKM4EQXBCJkJLPC_xx/exec";
+
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const resultBox = document.getElementById("result");
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ type: "login", email, password })
+        });
+
+        const data = await res.json();
+        resultBox.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        resultBox.textContent = "Error: " + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
