@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const API_URL = "https://script.google.com/macros/s/AKfycbxcZuaBkiWNaphNEz1cBbFk2zOw5ci5vU4R9iHbIvbrG7ZAWujk3tY9YIIO0fCUI9vz/exec";
+  const API_URL = "https://script.google.com/macros/s/AKfycby0G1kXHYiFde3v_BeFur3DtClqIsWsG6maooXfoVCBonf1voXKbD6d16kxsc2HsJ_A/exec";
 
   // ========== NAVIGATION ==========
   const hamburger = document.querySelector('.hamburger');
