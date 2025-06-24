@@ -69,25 +69,38 @@ document.addEventListener('DOMContentLoaded', function () {
       const password = document.getElementById("password").value;
 
       try {
-        const res = await fetch(API_URL, {
+        const response = await fetch(API_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ type: "login", email, password })
+          body: JSON.stringify({ 
+            type: "login", 
+            email, 
+            password 
+          })
         });
 
-        const result = await res.json();
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        
         if (result.success) {
+          // Store authentication data
+          localStorage.setItem("authToken", result.token || "");
           localStorage.setItem("teacherEmail", result.email);
-          localStorage.setItem("allowedClasses", JSON.stringify(result.allowedClasses));
+          localStorage.setItem("allowedClasses", JSON.stringify(result.allowedClasses || []));
+          
           if (loginModal) loginModal.style.display = "none";
-          alert("Login Successful!");
+          
+          // Redirect to dashboard
           window.location.href = "dashboard.html";
         } else {
           alert(result.message || "Invalid Credentials!");
         }
       } catch (error) {
         console.error("Login error:", error);
-        alert("Server error. Please try again later.");
+        alert("Login failed. Please try again later.");
       }
     });
   }
@@ -97,96 +110,88 @@ document.addEventListener('DOMContentLoaded', function () {
   if (resultForm) {
     resultForm.addEventListener("submit", async function (e) {
       e.preventDefault();
+      const examName = document.getElementById("exam").value;
       const className = document.getElementById("Class").value;
       const roll = document.getElementById("roll").value;
       const resultDisplay = document.getElementById("resultDisplay");
 
-      try {
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ type: "fetchResult", className, roll })
-        });
-
-        const result = await res.json();
-        if (result.success) {
-          resultDisplay.innerHTML = `
-            <h3>Result for ${result["Name of the students"] || "Student"}</h3>
-            <p>Roll No: ${result["Roll No"]}</p>
-            <p>Marks: ${result["Marks"] || "-"}</p>
-            <p>Grade: ${result["Grade"] || "-"}</p>
-            <p>Status: ${result["Status"] || result["Result"] || "-"}</p>
-          `;
-        } else {
-          resultDisplay.innerHTML = `<p class="error">${result.message}</p>`;
-        }
-      } catch (error) {
-        console.error("Fetch error:", error);
-        resultDisplay.innerHTML = `<p class="error">Failed to fetch results</p>`;
-      }
-    });
-  }
-
-  // ========== MARKS UPLOAD FOR DASHBOARD ==========
-  function showUploadForm(allowedClasses) {
-    if (!allowedClasses || allowedClasses.length === 0) return;
-    if (document.getElementById("uploadForm")) return;
-
-    const section = document.createElement("section");
-    section.classList.add("upload-section");
-    section.innerHTML = `
-      <div class="container">
-        <h2>Upload Student Marks</h2>
-        <form id="uploadForm">
-          <label>Select Class:</label>
-          <select id="uploadClass" required>
-            ${allowedClasses.map(c => `<option value="${c}">${c}</option>`).join("")}
-          </select>
-          <label>Roll No:</label>
-          <input type="text" id="uploadRoll" required>
-          <label>Marks:</label>
-          <input type="number" id="uploadMarks" required>
-          <button type="submit" class="btn">Update Marks</button>
-        </form>
-      </div>
-    `;
-
-    document.body.appendChild(section);
-
-    document.getElementById("uploadForm").addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const className = document.getElementById("uploadClass").value;
-      const rollNo = document.getElementById("uploadRoll").value;
-      const marks = parseFloat(document.getElementById("uploadMarks").value);
+      // Show loading state
+      resultDisplay.innerHTML = '<p>Loading results...</p>';
 
       try {
-        const res = await fetch(API_URL, {
+        const response = await fetch(API_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            type: "update",
-            className,
-            rollNo,
-            updates: { Marks: marks }
+          body: JSON.stringify({ 
+            type: "fetchResult", 
+            className, 
+            roll,
+            examName 
           })
         });
 
-        const data = await res.json();
-        alert(data.message || (data.success ? "Marks updated successfully" : "Update failed"));
-        if (data.success) {
-          this.reset();
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        
+        if (result.success) {
+          // Format the result display
+          resultDisplay.innerHTML = `
+            <div class="result-card">
+              <h3>${result["Exam Name"] || examName} Result</h3>
+              <div class="result-details">
+                <p><strong>Name:</strong> ${result["Name of the students"] || "N/A"}</p>
+                <p><strong>Roll No:</strong> ${result["Roll No"] || roll}</p>
+                <p><strong>Class:</strong> ${className}</p>
+                <hr>
+                ${Object.entries(result)
+                  .filter(([key]) => !["success", "message", "Exam Name", "Name of the students", "Roll No"].includes(key))
+                  .map(([subject, marks]) => `
+                    <p><strong>${subject}:</strong> ${marks || "-"}</p>
+                  `).join("")}
+                <hr>
+                <p><strong>Total:</strong> ${result["Total"] || "-"}</p>
+                <p><strong>Grade:</strong> ${result["Grade"] || "-"}</p>
+                <p class="result-status ${(result["Status"] || result["Result"] || "").toLowerCase()}">
+                  <strong>Status:</strong> ${result["Status"] || result["Result"] || "-"}
+                </p>
+              </div>
+            </div>
+          `;
+        } else {
+          resultDisplay.innerHTML = `<p class="error">${result.message || "Result not found"}</p>`;
         }
       } catch (error) {
-        console.error("Update error:", error);
-        alert("Failed to update marks. Try again.");
+        console.error("Fetch error:", error);
+        resultDisplay.innerHTML = `
+          <p class="error">Failed to fetch results: ${error.message}</p>
+          <button onclick="window.location.reload()">Try Again</button>
+        `;
       }
     });
   }
 
-  // Load upload form if admin is logged in
-  const teacherEmail = localStorage.getItem("teacherEmail");
-  const allowedClasses = JSON.parse(localStorage.getItem("allowedClasses") || "[]");
-  if (teacherEmail && allowedClasses.length > 0) {
-    showUploadForm(allowedClasses);
+  // ========== CHECK AUTH STATUS ==========
+  function checkAuthStatus() {
+    const authToken = localStorage.getItem("authToken");
+    const teacherEmail = localStorage.getItem("teacherEmail");
+    const allowedClasses = JSON.parse(localStorage.getItem("allowedClasses") || "[]");
+    
+    // If logged in but on index page, redirect to dashboard
+    if (authToken && window.location.pathname.endsWith("index.html")) {
+      window.location.href = "dashboard.html";
+    }
+    
+    // If not logged in but on dashboard, redirect to index
+    if (!authToken && window.location.pathname.endsWith("dashboard.html")) {
+      window.location.href = "index.html";
+    }
+    
+    return { authToken, teacherEmail, allowedClasses };
   }
+
+  // Initialize auth check
+  checkAuthStatus();
 });
