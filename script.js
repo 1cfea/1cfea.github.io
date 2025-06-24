@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const API_URL = "https://script.google.com/macros/s/AKfycbxUADdwYm-rHIFggwPxKioYpSd4uMEKGtd-gL773pNyKcUeJ_hKM4EQXBCJkJLPC_xx/exec";
+  const API_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLh4SUQOVJ-CiSliu02qZeklGViNyLEq7bCVOTbNAi3vlgZ8nZ4Ygexdr_T9chNGMtFfnBCuu8gSmbWyOJrdgaFZcH2mciITKP3bJczVC50VkbfhavUV0HlGuDfNwHwZhWOtL-0jR6ExTfwSKALlc37zf-61h_1x2sThwcxiSYMWI94gY7G-ev6afKWhC5N1BVzmq-8KDWbHjb6vdsTRu7iY1q03kgYx1DOw8BsI57KKT7E-37hL9N8v5Zthoo8GFM2Z8HWQEG551hj6ughvwqviQk6L4w&lib=MFujvURYuTo8Wi6v6Xuubgl07LWfkA_Vo";
 
   // ========== NAVIGATION ==========
   const hamburger = document.querySelector('.hamburger');
