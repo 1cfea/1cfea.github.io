@@ -239,21 +239,23 @@
     </footer>
 
     <!-- Login Modal -->
-   <div class="login-container">
+<div class="modal" id="loginModal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
     <h2>Admin Login</h2>
-    <form id="loginForm">
+    <form id="adminLoginForm">
       <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" required>
+        <label for="username">Email:</label>
+        <input type="email" id="username" required>
       </div>
       <div class="form-group">
         <label for="password">Password:</label>
         <input type="password" id="password" required>
       </div>
-      <button type="submit" class="login-btn">Login</button>
-      <div id="loginError" class="error-message"></div>
+      <button type="submit" class="btn">Login</button>
     </form>
   </div>
+</div>
 
     <script src="script.js"></script>
 </body>
