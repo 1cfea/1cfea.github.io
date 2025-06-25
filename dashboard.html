@@ -43,7 +43,21 @@
       </form>
     </div>
   </section>
+<script>
+  const email = sessionStorage.getItem('adminEmail');
+  const allowed = sessionStorage.getItem('allowedClasses');
 
+  if (!email) {
+    alert("Please login first.");
+    window.location.href = "index.html";
+  }
+
+  // Optional: Restrict to specific classes
+  const classAccess = allowed?.split(",") || [];
+
+  // Later you can show/hide UI based on classAccess
+  console.log("You are allowed for:", classAccess);
+</script>
   <script type="module" src="script.js"></script>
 </body>
 </html>
