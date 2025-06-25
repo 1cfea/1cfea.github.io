@@ -1,197 +1,113 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const API_URL = "https://script.google.com/macros/s/AKfycby0G1kXHYiFde3v_BeFur3DtClqIsWsG6maooXfoVCBonf1voXKbD6d16kxsc2HsJ_A/exec";
+// Initialize Supabase
+const supabaseUrl = 'https://dqwskwjnlaxkojkpgkzg.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRxd3Nrd2pubGF4a29qa3Bna3pnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NDQxOTAsImV4cCI6MjA2NjQyMDE5MH0.0wAUyur6b6jeN_wB5fZgYj7b-uE4vzjxC_GiPVrGANM';
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-  // ========== NAVIGATION ==========
-  const hamburger = document.querySelector('.hamburger');
-  const navLinks = document.querySelector('.nav-links');
-  if (hamburger) {
-    hamburger.addEventListener('click', () => navLinks.classList.toggle('active'));
-  }
+const classSelect = document.getElementById('classSelect');
+const examSelect = document.getElementById('examSelect');
+const subjectsContainer = document.getElementById('subjectsContainer');
+const resultForm = document.getElementById('resultForm');
 
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault();
-      const targetId = this.getAttribute('href');
-      const target = document.querySelector(targetId);
-      if (target && targetId !== "#") {
-        window.scrollTo({ top: target.offsetTop - 100, behavior: 'smooth' });
-        navLinks.classList.remove('active');
-      }
-    });
-  });
+// Fetch Classes
+async function loadClasses() {
+  const { data, error } = await supabase.from('classes').select('*');
+  if (error) return alert('Error loading classes');
+  classSelect.innerHTML = data.map(cls => `<option value="${cls.name}">${cls.name}</option>`).join('');
+}
 
-  window.addEventListener('scroll', () => {
-    const header = document.querySelector('nav');
-    if (header) {
-      header.classList.toggle('sticky', window.scrollY > 0);
-    }
-  });
+// Fetch Exams
+async function loadExams() {
+  const { data, error } = await supabase.from('exams').select('*');
+  if (error) return alert('Error loading exams');
+  examSelect.innerHTML = data.map(exam => `<option value="${exam.name}">${exam.name}</option>`).join('');
+}
 
-  // ========== GALLERY ==========
-  const viewMoreBtn = document.getElementById("viewMoreBtn");
-  const hiddenPhotos = document.querySelectorAll(".hidden-photo");
-  if (viewMoreBtn) {
-    viewMoreBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      hiddenPhotos.forEach(item => item.classList.add("show"));
-      viewMoreBtn.style.display = "none";
-    });
-  }
+// Fetch Subjects by Class
+async function loadSubjectsByClass(className) {
+  const { data, error } = await supabase
+    .from('subjects')
+    .select('*')
+    .eq('class', className);
 
-  // ========== LOGIN MODAL ==========
-  const loginBtn = document.getElementById("loginBtn");
-  const loginModal = document.getElementById("loginModal");
-  const closeBtn = document.querySelector(".close-btn");
-  const adminLoginForm = document.getElementById("adminLoginForm");
+  if (error) return alert('Error loading subjects');
 
-  if (loginBtn && loginModal) {
-    loginBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      loginModal.style.display = "flex";
-    });
+  subjectsContainer.innerHTML = data.map(subject => `
+    <label>${subject.name}: 
+      <input type="number" name="subject_${subject.name}" required min="0" max="100" />
+    </label><br>
+  `).join('');
+}
 
-    closeBtn.addEventListener("click", () => {
-      loginModal.style.display = "none";
-    });
-
-    window.addEventListener("click", (e) => {
-      if (e.target === loginModal) {
-        loginModal.style.display = "none";
-      }
-    });
-  }
-
-  // ========== ADMIN LOGIN ==========
-  if (adminLoginForm) {
-    adminLoginForm.addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const email = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value;
-
-      try {
-        const response = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ 
-            type: "login", 
-            email, 
-            password 
-          })
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        
-        if (result.success) {
-          // Store authentication data
-          localStorage.setItem("authToken", result.token || "");
-          localStorage.setItem("teacherEmail", result.email);
-          localStorage.setItem("allowedClasses", JSON.stringify(result.allowedClasses || []));
-          
-          if (loginModal) loginModal.style.display = "none";
-          
-          // Redirect to dashboard
-          window.location.href = "dashboard.html";
-        } else {
-          alert(result.message || "Invalid Credentials!");
-        }
-      } catch (error) {
-        console.error("Login error:", error);
-        alert("Login failed. Please try again later.");
-      }
-    });
-  }
-
-  // ========== RESULT CHECK (STUDENT SIDE) ==========
-  const resultForm = document.getElementById("resultForm");
-  if (resultForm) {
-    resultForm.addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const examName = document.getElementById("exam").value;
-      const className = document.getElementById("Class").value;
-      const roll = document.getElementById("roll").value;
-      const resultDisplay = document.getElementById("resultDisplay");
-
-      // Show loading state
-      resultDisplay.innerHTML = '<p>Loading results...</p>';
-
-      try {
-        const response = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ 
-            type: "fetchResult", 
-            className, 
-            roll,
-            examName 
-          })
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        
-        if (result.success) {
-          // Format the result display
-          resultDisplay.innerHTML = `
-            <div class="result-card">
-              <h3>${result["Exam Name"] || examName} Result</h3>
-              <div class="result-details">
-                <p><strong>Name:</strong> ${result["Name of the students"] || "N/A"}</p>
-                <p><strong>Roll No:</strong> ${result["Roll No"] || roll}</p>
-                <p><strong>Class:</strong> ${className}</p>
-                <hr>
-                ${Object.entries(result)
-                  .filter(([key]) => !["success", "message", "Exam Name", "Name of the students", "Roll No"].includes(key))
-                  .map(([subject, marks]) => `
-                    <p><strong>${subject}:</strong> ${marks || "-"}</p>
-                  `).join("")}
-                <hr>
-                <p><strong>Total:</strong> ${result["Total"] || "-"}</p>
-                <p><strong>Grade:</strong> ${result["Grade"] || "-"}</p>
-                <p class="result-status ${(result["Status"] || result["Result"] || "").toLowerCase()}">
-                  <strong>Status:</strong> ${result["Status"] || result["Result"] || "-"}
-                </p>
-              </div>
-            </div>
-          `;
-        } else {
-          resultDisplay.innerHTML = `<p class="error">${result.message || "Result not found"}</p>`;
-        }
-      } catch (error) {
-        console.error("Fetch error:", error);
-        resultDisplay.innerHTML = `
-          <p class="error">Failed to fetch results: ${error.message}</p>
-          <button onclick="window.location.reload()">Try Again</button>
-        `;
-      }
-    });
-  }
-
-  // ========== CHECK AUTH STATUS ==========
-  function checkAuthStatus() {
-    const authToken = localStorage.getItem("authToken");
-    const teacherEmail = localStorage.getItem("teacherEmail");
-    const allowedClasses = JSON.parse(localStorage.getItem("allowedClasses") || "[]");
-    
-    // If logged in but on index page, redirect to dashboard
-    if (authToken && window.location.pathname.endsWith("index.html")) {
-      window.location.href = "dashboard.html";
-    }
-    
-    // If not logged in but on dashboard, redirect to index
-    if (!authToken && window.location.pathname.endsWith("dashboard.html")) {
-      window.location.href = "index.html";
-    }
-    
-    return { authToken, teacherEmail, allowedClasses };
-  }
-
-  // Initialize auth check
-  checkAuthStatus();
+// Handle Class change
+classSelect.addEventListener('change', () => {
+  loadSubjectsByClass(classSelect.value);
 });
+
+// Handle Form Submission
+resultForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const studentName = document.getElementById('studentName').value;
+  const rollNo = document.getElementById('rollNo').value;
+  const selectedClass = classSelect.value;
+  const selectedExam = examSelect.value;
+
+  const marks = {};
+  subjectsContainer.querySelectorAll('input[type="number"]').forEach(input => {
+    const subject = input.name.replace('subject_', '');
+    marks[subject] = Number(input.value);
+  });
+
+  // Check if student exists
+  const { data: existingStudent } = await supabase
+    .from('students')
+    .select('*')
+    .eq('rollNo', rollNo)
+    .eq('class', selectedClass)
+    .single();
+
+  let studentId;
+  if (!existingStudent) {
+    const { data: newStudent, error: studentError } = await supabase
+      .from('students')
+      .insert([{ name: studentName, rollNo: rollNo, class: selectedClass }])
+      .select()
+      .single();
+    if (studentError) return alert('Error adding student');
+    studentId = newStudent.id;
+  } else {
+    studentId = existingStudent.id;
+  }
+
+  // Insert results
+  for (const [subject, mark] of Object.entries(marks)) {
+    await supabase.from('results').insert([
+      {
+        student_id: studentId,
+        class: selectedClass,
+        exam: selectedExam,
+        subject: subject,
+        marks: mark
+      }
+    ]);
+  }
+
+  alert('Results saved successfully!');
+  resultForm.reset();
+  subjectsContainer.innerHTML = '';
+});
+
+// Initial load
+loadClasses();
+loadExams();
+
+// ========== GALLERY VIEW MORE ==========
+const viewMoreBtn = document.getElementById("viewMoreBtn");
+const hiddenPhotos = document.querySelectorAll(".hidden-photo");
+if (viewMoreBtn) {
+  viewMoreBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    hiddenPhotos.forEach(item => item.classList.add("show"));
+    viewMoreBtn.style.display = "none";
+  });
+}
