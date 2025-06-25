@@ -761,14 +761,10 @@
    <!-- Supabase Login Script to place just before </body> -->
 <script type="module">
   import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+  import bcrypt from "https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/+esm";
 
-  // ✅ Replace these with your actual Supabase project URL & public key
-  const supabase = createClient(
-    "https://dqwskwjnlaxkojkpgkzg.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRxd3Nrd2pubGF4a29qa3Bna3pnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NDQxOTAsImV4cCI6MjA2NjQyMDE5MH0.0wAUyur6b6jeN_wB5fZgYj7b-uE4vzjxC_GiPVrGANM"
-  );
+  const supabase = createClient("https://your-project.supabase.co", "your-anon-key");
 
-  // Modal logic
   const loginBtn = document.getElementById('loginBtn');
   const loginModal = document.getElementById('loginModal');
   const closeBtn = document.querySelector('.close-btn');
@@ -779,26 +775,27 @@
     if (e.target === loginModal) loginModal.style.display = 'none';
   });
 
-  // Login form handler
   document.getElementById('adminLoginForm')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
 
+    // Get user by email
     const { data, error } = await supabase
       .from('admins')
-      .select('*')
+      .select('email, allowedclasses, password_hash')
       .eq('email', email)
-      .eq('password', password)
       .single();
 
-    if (error || !data) {
-      alert("Invalid email or password");
-    } else {
-      sessionStorage.setItem('adminEmail', data.email);
-      sessionStorage.setItem('allowedClasses', data.allowedclasses);
-      window.location.href = 'dashboard.html';
-    }
+    if (error || !data) return alert("Invalid credentials");
+
+    // Compare password hash
+    const valid = await bcrypt.compare(password, data.password_hash);
+    if (!valid) return alert("Invalid credentials");
+
+    sessionStorage.setItem('adminEmail', data.email);
+    sessionStorage.setItem('allowedClasses', data.allowedclasses);
+    window.location.href = 'dashboard.html';
   });
 </script>
     <script src="script.js"></script>
