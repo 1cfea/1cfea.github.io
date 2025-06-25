@@ -758,43 +758,49 @@
         </div>
     </footer>
 
-    <!-- Login Modal -->
-    <div class="modal" id="loginModal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2>Admin Login</h2>
-            <form id="adminLoginForm">
-                <div class="form-group">
-                    <label for="username">Email:</label>
-                    <input type="email" id="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" required>
-                </div>
-                <button type="submit" class="btn">Login</button>
-            </form>
-        </div>
-    </div>
+   <!-- Supabase Login Script to place just before </body> -->
+<script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-    <!-- Google Apps Script API -->
-    <script src="https://apis.google.com/js/api.js"></script>
-    <script>
-        function handleClientLoad() {
-            gapi.load('client:auth2', initClient);
-        }
+  // ✅ Replace these with your actual Supabase project URL & public key
+  const supabase = createClient(
+    "https://dqwskwjnlaxkojkpgkzg.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRxd3Nrd2pubGF4a29qa3Bna3pnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NDQxOTAsImV4cCI6MjA2NjQyMDE5MH0.0wAUyur6b6jeN_wB5fZgYj7b-uE4vzjxC_GiPVrGANM"
+  );
 
-        function initClient() {
-            gapi.client.init({
-                'apiKey': 'AIzaSyAZtruovkT7UdK_ys2M3M3QAtdDUkbdYa4',
-                'clientId': '692537138375-g51arm2ss9887i5qvkm149j7aujek9jv.apps.googleusercontent.com',
-                'scope': 'https://www.googleapis.com/auth/spreadsheets',
-                'discoveryDocs': ['https://sheets.googleapis.com/$discovery/rest?version=v4']
-            }).then(function() {
-                // API client is loaded and initialized
-            });
-        }
-    </script>
+  // Modal logic
+  const loginBtn = document.getElementById('loginBtn');
+  const loginModal = document.getElementById('loginModal');
+  const closeBtn = document.querySelector('.close-btn');
+
+  loginBtn?.addEventListener('click', () => loginModal.style.display = 'flex');
+  closeBtn?.addEventListener('click', () => loginModal.style.display = 'none');
+  window.addEventListener('click', (e) => {
+    if (e.target === loginModal) loginModal.style.display = 'none';
+  });
+
+  // Login form handler
+  document.getElementById('adminLoginForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    const { data, error } = await supabase
+      .from('admins')
+      .select('*')
+      .eq('email', email)
+      .eq('password', password)
+      .single();
+
+    if (error || !data) {
+      alert("Invalid email or password");
+    } else {
+      sessionStorage.setItem('adminEmail', data.email);
+      sessionStorage.setItem('allowedClasses', data.allowedclasses);
+      window.location.href = 'dashboard.html';
+    }
+  });
+</script>
     <script src="script.js"></script>
 </body>
 </html>
