@@ -494,42 +494,69 @@ footer {
     margin-bottom: 0;
 }
 
-/* Modal */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-}
-
+/* Enhanced Modal Styles */
 .modal-content {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 500px;
-    position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
-.close-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #777;
+.modal-header {
+  background: #2c3e50;
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  border-bottom: none;
+  padding: 20px;
 }
 
-.close-btn:hover {
-    color: var(--danger-color);
+.modal-body {
+  padding: 30px;
+  background: #f9f9f9;
 }
 
+/* Form input styling */
+#adminLoginForm .form-control {
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+#adminLoginForm .form-label {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+   #adminLoginForm .btn-primary {
+  background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11);
+}
+
+#adminLoginForm .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1);
+} 
+@media (max-width: 576px) {
+  .modal-logo {
+    height: 30px;
+  }
+  
+  .modal-header .modal-title {
+    font-size: 1.1rem;
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+}
 /* Responsive Styles */
 @media (max-width: 992px) {
     .about-content {
@@ -706,4 +733,26 @@ main#dashboard .save-btn:hover {
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+/* School Logo in Modal */
+.modal-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.modal-logo {
+  height: 40px;
+  width: auto;
+}
+
+.modal-header .modal-title {
+  margin: 0;
+  font-size: 1.25rem;
+  color: white;
+}
+
+/* Adjust header padding for logo */
+.modal-header {
+  padding: 15px 20px;
 }
