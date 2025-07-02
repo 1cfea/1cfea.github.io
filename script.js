@@ -111,3 +111,52 @@ if (viewMoreBtn) {
     viewMoreBtn.style.display = "none";
   });
 }
+// Initialize Bootstrap modal
+const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+
+// Handle login button click
+document.getElementById('loginBtn')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  loginModal.show();
+});
+
+// Handle login form submission
+document.getElementById('adminLoginForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  const errorElement = document.getElementById('loginError');
+
+  try {
+    // Authenticate with Supabase
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) throw error;
+
+    // Get additional admin info
+    const { data: adminData, error: adminError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', data.user.id)
+      .single();
+
+    if (adminError) throw adminError;
+
+    // Store admin info in sessionStorage
+    sessionStorage.setItem('adminEmail', data.user.email);
+    sessionStorage.setItem('adminName', adminData.name || 'Admin');
+    sessionStorage.setItem('allowedClasses', adminData.allowed_classes || '');
+
+    // Redirect to dashboard
+    window.location.href = 'dashboard.html';
+    
+  } catch (error) {
+    errorElement.textContent = error.message;
+    errorElement.classList.remove('d-none');
+    console.error('Login error:', error);
+  }
+});
