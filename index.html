@@ -1,803 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Career Foundation English Academy - Napet Palli, Imphal East</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Base styles */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        
-        /* Header styles */
-        .top-bar {
-            background-color: #2c3e50;
-            color: white;
-            padding: 8px 0;
-            font-size: 14px;
-        }
-        
-        .contact-info span, .social-links a {
-            margin-right: 15px;
-            color: white;
-        }
-        
-        .social-links a:hover {
-            color: #f39c12;
-        }
-        
-        nav {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo img {
-            height: 50px;
-            margin-right: 15px;
-        }
-        
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav-links li a {
-            padding: 20px 15px;
-            color: #2c3e50;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-links li a:hover {
-            color: #e74c3c;
-        }
-        
-        .login-btn {
-            background-color: #e74c3c;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 4px;
-            margin-left: 15px;
-        }
-        
-        .login-btn:hover {
-            background-color: #c0392b;
-            color: white;
-        }
-        
-        .hamburger {
-            display: none;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        
-        /* Hero section */
-        .hero {
-            background: linear-gradient(rgba(0,0,0,0.6), url('./images/school-building.jpg');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 120px 0;
-            text-align: center;
-        }
-        
-        .hero h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-        }
-        
-        .btn {
-            display: inline-block;
-            background-color: #e74c3c;
-            color: white;
-            padding: 10px 25px;
-            border-radius: 4px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        
-        .btn:hover {
-            background-color: #c0392b;
-            color: white;
-        }
-        
-        /* About section */
-        .about {
-            padding: 80px 0;
-        }
-        
-        .about h2 {
-            text-align: center;
-            margin-bottom: 50px;
-            color: #2c3e50;
-        }
-        
-        .about-content {
-            display: flex;
-            gap: 40px;
-        }
-        
-        .about-text {
-            flex: 1;
-        }
-        
-        .about-image {
-            flex: 1;
-        }
-        
-        .about-image img {
-            width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .achievements {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-        
-        .achievement-item {
-            text-align: center;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            width: 30%;
-        }
-        
-        .achievement-item i {
-            font-size: 2rem;
-            color: #e74c3c;
-            margin-bottom: 15px;
-        }
-        
-        /* Gallery section */
-        .gallery {
-            padding: 80px 0;
-            background-color: #f8f9fa;
-        }
-        
-        .gallery h2 {
-            text-align: center;
-            margin-bottom: 50px;
-            color: #2c3e50;
-        }
-        
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-        
-        .gallery-item {
-            position: relative;
-            overflow: hidden;
-            border-radius: 8px;
-            height: 250px;
-        }
-        
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-        
-        .gallery-item:hover img {
-            transform: scale(1.05);
-        }
-        
-        .overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: rgba(0,0,0,0.7);
-            color: white;
-            padding: 10px;
-            text-align: center;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
-        
-        .gallery-item:hover .overlay {
-            transform: translateY(0);
-        }
-        
-        .hidden-photo {
-            display: none;
-        }
-        
-        .hidden-photo.show {
-            display: block;
-        }
-        
-        /* Notices section */
-        .notices {
-            padding: 80px 0;
-        }
-        
-        .notices h2 {
-            text-align: center;
-            margin-bottom: 50px;
-            color: #2c3e50;
-        }
-        
-        .notice-board {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-        }
-        
-        .notice-item {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .notice-item:last-child {
-            border-bottom: none;
-        }
-        
-        .notice-item h3 {
-            color: #e74c3c;
-            margin-bottom: 10px;
-        }
-        
-        .notice-date {
-            display: block;
-            font-size: 0.8rem;
-            color: #7f8c8d;
-            margin-top: 10px;
-        }
-        
-        /* Results section */
-        .results {
-            padding: 80px 0;
-            background-color: #f8f9fa;
-        }
-        
-        .results h2 {
-            text-align: center;
-            margin-bottom: 50px;
-            color: #2c3e50;
-        }
-        
-        .results-container {
-            display: flex;
-            gap: 30px;
-        }
-        
-        .result-search {
-            flex: 1;
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        
-        .result-search h3 {
-            margin-bottom: 20px;
-            color: #2c3e50;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .result-display {
-            flex: 1;
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            min-height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .result-card {
-            width: 100%;
-        }
-        
-        .exam-info {
-            color: #7f8c8d;
-            margin-bottom: 20px;
-        }
-        
-        .detail-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .detail-item.total, .detail-item.grade, .detail-item.result {
-            font-weight: bold;
-        }
-        
-        .pass {
-            color: #27ae60;
-        }
-        
-        .fail {
-            color: #e74c3c;
-        }
-        
-        .error {
-            color: #e74c3c;
-        }
-        
-        /* Loading spinner */
-        .loading-spinner {
-            display: inline-block;
-            width: 2rem;
-            height: 2rem;
-            border: 3px solid rgba(0,0,0,0.1);
-            border-radius: 50%;
-            border-top-color: #e74c3c;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Footer */
-        footer {
-            background-color: #2c3e50;
-            color: white;
-            padding: 60px 0 0;
-        }
-        
-        .footer-content {
-            display: flex;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-        
-        .footer-section {
-            flex: 1;
-        }
-        
-        .footer-section h3 {
-            margin-bottom: 20px;
-            color: #f39c12;
-        }
-        
-        .footer-section p {
-            margin-bottom: 10px;
-        }
-        
-        .footer-section a {
-            color: white;
-            text-decoration: none;
-            display: block;
-            margin-bottom: 8px;
-        }
-        
-        .footer-section a:hover {
-            color: #f39c12;
-        }
-        
-        .footer-bottom {
-            background-color: #1a252f;
-            padding: 20px 0;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-        
-        .footer-bottom p {
-            margin-bottom: 5px;
-        }
-        
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal-content {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            width: 100%;
-            max-width: 400px;
-            position: relative;
-        }
-        
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        
-        /* Responsive styles */
-        @media (max-width: 992px) {
-            .about-content, .footer-content {
-                flex-direction: column;
-            }
-            
-            .achievements {
-                flex-wrap: wrap;
-            }
-            
-            .achievement-item {
-                width: 48%;
-                margin-bottom: 15px;
-            }
-            
-            .results-container {
-                flex-direction: column;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background-color: white;
-                flex-direction: column;
-                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-            }
-            
-            .nav-links.active {
-                display: flex;
-            }
-            
-            .nav-links li a {
-                padding: 15px;
-                border-bottom: 1px solid #eee;
-            }
-            
-            .hamburger {
-                display: block;
-            }
-            
-            .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .achievement-item {
-                width: 100%;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .gallery-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .hero h2 {
-                font-size: 2rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Career Foundation English Academy - Napet Palli</title>
+
+  <!-- External Libraries -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <header>
-        <div class="top-bar">
-            <div class="container">
-                <div class="contact-info">
-                    <span><i class="fas fa-phone"></i> +91 8837011530</span>
-                    <span><i class="fas fa-envelope"></i> infotocfea@gmail.com</span>
-                </div>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
+
+  <!-- Header -->
+  <header>
+    <div class="top-bar">
+      <div class="container">
+        <div class="contact-info">
+          <span><i class="fas fa-phone"></i> +91 8837011530</span>
+          <span><i class="fas fa-envelope"></i> infotocfea@gmail.com</span>
         </div>
-        <nav>
-            <div class="container">
-                <div class="logo">
-                    <img src="./images/napet-logo.png" alt="CFEA Logo">
-                    <h1>Career Foundation English Academy</h1>
-                </div>
-                <ul class="nav-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#gallery">Gallery</a></li>
-                    <li><a href="#notices">Notices</a></li>
-                    <li><a href="#results">Results</a></li>
-                    <li><a href="#" class="login-btn" id="loginBtn">Admin Login</a></li>
-                </ul>
-                <div class="hamburger">
-                    <i class="fas fa-bars"></i>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <h2>Quality Education for a Brighter Future</h2>
-                <p>Government Recognized English Medium School from Day Care to Class X</p>
-                <a href="#about" class="btn">Learn More</a>
-            </div>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
         </div>
-    </section>
-
-    <section class="about" id="about">
-        <div class="container">
-            <h2>About CFEA</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>Career Foundation English Academy (CFEA) is a co-educational government recognized English medium school located in Napet Palli, Imphal East, Manipur (795010).</p>
-                    <p>We provide quality education from Day Care up to Class X, with a proven track record of 100% success rate in board examinations.</p>
-                    <p>Our mission is to nurture young minds with holistic development, combining academic excellence with moral values and life skills.</p>
-                    <div class="achievements">
-                        <div class="achievement-item">
-                            <i class="fas fa-graduation-cap"></i>
-                            <h3>100% Success Rate</h3>
-                        </div>
-                        <div class="achievement-item">
-                            <i class="fas fa-school"></i>
-                            <h3>Day Care to Class X</h3>
-                        </div>
-                        <div class="achievement-item">
-                            <i class="fas fa-award"></i>
-                            <h3>Government Recognized</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="about-image">
-                    <img src="./images/Faculty.jpg" alt="Our Faculties">
-                </div>
-            </div>
+      </div>
+    </div>
+    <nav>
+      <div class="container">
+        <div class="logo">
+          <img src="./images/napet-logo.png" alt="CFEA Logo" />
+          <h1>Career Foundation English Academy</h1>
         </div>
-    </section>
-
-    <section class="gallery" id="gallery">
-        <div class="container">
-            <h2>Gallery</h2>
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="./images/tree-plantation.jpg" alt="School Activity">
-                    <div class="overlay">World Environment Day</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="./images/Sports.jpg" alt="School Activity">
-                    <div class="overlay">Sports Day</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="./images/classroom.jpg" alt="School Activity">
-                    <div class="overlay">Classroom</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="./images/laboratory.jpg" alt="School Activity">
-                    <div class="overlay">Laboratory</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="./images/parents.jpg" alt="School Activity">
-                    <div class="overlay">Parents Meet</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="./images/Vacination.jpg" alt="School Activity">
-                    <div class="overlay">Vaccination Programme</div>
-                </div>
-                <div class="gallery-item hidden-photo">
-                    <img src="./images/Excr.JPG" alt="School Activity">
-                    <div class="overlay">Annual Educational Excursion</div>
-                </div>
-                <div class="gallery-item hidden-photo">
-                    <img src="./images/Combine.jpg" alt="School Activity">
-                    <div class="overlay">Workshop</div>
-                </div>
-                <div class="gallery-item hidden-photo">
-                    <img src="./images/IMG_20231104_120923.jpg" alt="School Activity">
-                    <div class="overlay">Quiz Competition</div>
-                </div>
-            </div>
-            <a href="#" class="btn" id="viewMoreBtn">View More Photos</a>
+        <ul class="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#notices">Notices</a></li>
+          <li><a href="#results">Results</a></li>
+          <li><a href="#" class="login-btn" id="loginBtn">Admin Login</a></li>
+        </ul>
+        <div class="hamburger">
+          <i class="fas fa-bars"></i>
         </div>
-    </section>
+      </div>
+    </nav>
+  </header>
 
-    <section class="notices" id="notices">
-        <div class="container">
-            <h2>Notices & Announcements</h2>
-            <div class="notice-board">
-                <div class="notice-item">
-                    <h3>Holiday Notice</h3>
-                    <p>School will remain closed upto 5th June 2025 due to flood.</p>
-                    <span class="notice-date">1st June 2025</span>
-                </div>
-                <div class="notice-item">
-                    <h3>Parent-Teacher Meeting</h3>
-                    <p>Quarterly PTM scheduled for 20th August 2025 from 9 AM to 1 PM.</p>
-                    <span class="notice-date">5 June 2025</span>
-                </div>
-                <div class="notice-item">
-                    <h3>Annual Function Day</h3>
-                    <p>Annual Function Day will be held on 25th August 2025. All students must participate.</p>
-                    <span class="notice-date">1 June 2025</span>
-                </div>
+  <!-- Hero -->
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="hero-content">
+        <h2 data-aos="fade-down">Quality Education for a Brighter Future</h2>
+        <p data-aos="fade-up">Government Recognized English Medium School from Day Care to Class X</p>
+        <a href="#about" class="btn" data-aos="zoom-in">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about" id="about">
+    <div class="container">
+      <h2>About CFEA</h2>
+      <div class="about-content">
+        <div class="about-text" data-aos="fade-right">
+          <p>Career Foundation English Academy (CFEA) is a co-educational government recognized English medium school located in Napet Palli, Imphal East, Manipur (795010).</p>
+          <p>We provide quality education from Day Care up to Class X, with a proven track record of 100% success rate in board examinations.</p>
+          <p>Our mission is to nurture young minds with holistic development, combining academic excellence with moral values and life skills.</p>
+          <div class="achievements">
+            <div class="achievement-item" data-aos="zoom-in" data-aos-delay="200">
+              <i class="fas fa-graduation-cap"></i>
+              <h3>100% Success Rate</h3>
             </div>
-        </div>
-    </section>
-
-    <section class="results" id="results">
-        <div class="container">
-            <h2>Exam Results</h2>
-            <div class="results-container">
-                <div class="result-search">
-                    <h3>Check Your Result</h3>
-                    <form id="resultForm">
-                        <div class="form-group">
-                            <label for="exam">Select Exam:</label>
-                            <select id="exam" required>
-                                <option value="">-- Select Exam --</option>
-                                <option value="First Semester">First Semester Exam 2025</option>
-                                <option value="Second Semester">Second Semester Exam 2025</option>
-                                <option value="First Periodic">First Periodic Test 2025</option>
-                                <option value="Second Periodic">Second Periodic Test 2025</option>
-                                 <option value="Second Periodic">Third Semester 2025</option>
-                                <option value="Fourth Semester">Fourth Semester Exam 2025</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="Class">Class:</label>
-                            <select id="Class" required>
-                                <option value="">-- Select Class --</option>
-                                <option value="Pre Nursery">Pre Nursery</option>
-                                <option value="Nursery">Nursery</option>
-                                <option value="KG">KG</option>
-                                <option value="Class I">Class I</option>
-                                <option value="Class II">Class II</option>
-                                <option value="Class III">Class III</option>
-                                <option value="Class IV">Class IV</option>
-                                <option value="Class V">Class V</option>
-                                <option value="Class VI">Class VI</option>
-                                <option value="Class VII">Class VII</option>
-                                <option value="Class VIII">Class VIII</option>
-                                <option value="Class IX">Class IX</option>
-                                <option value="Class X">Class X</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="roll">Roll Number:</label>
-                            <input type="text" id="roll" placeholder="Enter your roll number" required>
-                        </div>
-                        <button type="submit" class="btn">Check Result</button>
-                    </form>
-                </div>
-                <div class="result-display" id="resultDisplay">
-                    <p>Enter your exam details to view results</p>
-                </div>
+            <div class="achievement-item" data-aos="zoom-in" data-aos-delay="400">
+              <i class="fas fa-school"></i>
+              <h3>Day Care to Class X</h3>
             </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Contact Us</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> Napet Palli, Imphal East, Manipur - 795010</p>
-                    <p><i class="fas fa-phone"></i> +91 8837011530</p>
-                    <p><i class="fas fa-envelope"></i> infotocfea@gmail.com</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#gallery">Gallery</a></li>
-                        <li><a href="#notices">Notices</a></li>
-                        <li><a href="#results">Results</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>School Hours</h3>
-                    <p>Monday - Friday: 9:00 AM - 2:00 PM</p>
-                    <p>Saturday: 9:00 AM - 12:00 PM</p>
-                    <p>Sunday: Closed</p>
-                </div>
+            <div class="achievement-item" data-aos="zoom-in" data-aos-delay="600">
+              <i class="fas fa-award"></i>
+              <h3>Government Recognized</h3>
             </div>
+          </div>
         </div>
-        <div class="footer-bottom">
-            <div class="container">
-                <p>&copy; 2025-26 Career Foundation English Academy. All Rights Reserved.</p>
-                <p>Created by BK Yumnam | Disclaimer: This website is for informational purposes only. Any discrepancies with official documents are unintentional.</p>
+        <div class="about-image" data-aos="fade-left">
+          <img src="./images/Faculty.jpg" alt="Our Faculties" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="gallery" id="gallery">
+    <div class="container">
+      <h2>Gallery</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="./images/tree-plantation.jpg" alt="School Activity"><div class="overlay">World Environment Day</div></div>
+        <div class="gallery-item"><img src="./images/Sports.jpg" alt="School Activity"><div class="overlay">Sports Day</div></div>
+        <div class="gallery-item"><img src="./images/classroom.jpg" alt="School Activity"><div class="overlay">Classroom</div></div>
+        <div class="gallery-item"><img src="./images/laboratory.jpg" alt="School Activity"><div class="overlay">Laboratory</div></div>
+        <div class="gallery-item"><img src="./images/parents.jpg" alt="School Activity"><div class="overlay">Parents Meet</div></div>
+        <div class="gallery-item"><img src="./images/Vacination.jpg" alt="School Activity"><div class="overlay">Vaccination Programme</div></div>
+        <div class="gallery-item hidden-photo"><img src="./images/Excr.JPG" alt="School Activity"><div class="overlay">Annual Educational Excursion</div></div>
+        <div class="gallery-item hidden-photo"><img src="./images/Combine.jpg" alt="School Activity"><div class="overlay">Workshop</div></div>
+        <div class="gallery-item hidden-photo"><img src="./images/IMG_20231104_120923.jpg" alt="School Activity"><div class="overlay">Quiz Competition</div></div>
+      </div>
+      <a href="#" class="btn" id="viewMoreBtn">View More Photos</a>
+    </div>
+  </section>
+
+  <!-- Notices -->
+  <section class="notices" id="notices">
+    <div class="container">
+      <h2>Notices & Announcements</h2>
+      <div class="notice-board">
+        <div class="notice-item">
+          <h3>Holiday Notice</h3>
+          <p>School will remain closed upto 5th June 2025 due to flood.</p>
+          <span class="notice-date">1st June 2025</span>
+        </div>
+        <div class="notice-item">
+          <h3>Parent-Teacher Meeting</h3>
+          <p>Quarterly PTM scheduled for 20th August 2025 from 9 AM to 1 PM.</p>
+          <span class="notice-date">5 June 2025</span>
+        </div>
+        <div class="notice-item">
+          <h3>Annual Function Day</h3>
+          <p>Annual Function Day will be held on 25th August 2025. All students must participate.</p>
+          <span class="notice-date">1 June 2025</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="results" id="results">
+    <div class="container">
+      <h2>Exam Results</h2>
+      <div class="results-container">
+        <div class="result-search">
+          <h3>Check Your Result</h3>
+          <form id="resultForm">
+            <div class="form-group">
+              <label for="exam">Select Exam:</label>
+              <select id="exam" required>
+                <option value="">-- Select Exam --</option>
+                <option value="First Semester">First Semester Exam 2025</option>
+                <option value="Second Semester">Second Semester Exam 2025</option>
+                <option value="First Periodic">First Periodic Test 2025</option>
+                <option value="Second Periodic">Second Periodic Test 2025</option>
+                <option value="Third Semester">Third Semester 2025</option>
+                <option value="Fourth Semester">Fourth Semester Exam 2025</option>
+              </select>
             </div>
+            <div class="form-group">
+              <label for="Class">Class:</label>
+              <select id="Class" required>
+                <option value="">-- Select Class --</option>
+                <option value="Pre Nursery">Pre Nursery</option>
+                <option value="Nursery">Nursery</option>
+                <option value="KG">KG</option>
+                <option value="Class I">Class I</option>
+                <option value="Class II">Class II</option>
+                <option value="Class III">Class III</option>
+                <option value="Class IV">Class IV</option>
+                <option value="Class V">Class V</option>
+                <option value="Class VI">Class VI</option>
+                <option value="Class VII">Class VII</option>
+                <option value="Class VIII">Class VIII</option>
+                <option value="Class IX">Class IX</option>
+                <option value="Class X">Class X</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="roll">Roll Number:</label>
+              <input type="text" id="roll" placeholder="Enter your roll number" required />
+            </div>
+            <button type="submit" class="btn">Check Result</button>
+          </form>
         </div>
-    </footer>
+        <div class="result-display" id="resultDisplay">
+          <p>Enter your exam details to view results</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-   <!-- Supabase Login Script to place just before </body> -->
-<script type="module">
-  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-  import bcrypt from "https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/+esm";
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <p><i class="fas fa-map-marker-alt"></i> Napet Palli, Imphal East, Manipur - 795010</p>
+          <p><i class="fas fa-phone"></i> +91 8837011530</p>
+          <p><i class="fas fa-envelope"></i> infotocfea@gmail.com</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href=\"#home\">Home</a></li>
+            <li><a href=\"#about\">About Us</a></li>
+            <li><a href=\"#gallery\">Gallery</a></li>
+            <li><a href=\"#notices\">Notices</a></li>
+            <li><a href=\"#results\">Results</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>School Hours</h3>
+          <p>Monday - Friday: 9:00 AM - 2:00 PM</p>
+          <p>Saturday: 9:00 AM - 12:00 PM</p>
+          <p>Sunday: Closed</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; 2025-26 Career Foundation English Academy. All Rights Reserved.</p>
+        <p>Created by BK Yumnam | Disclaimer: This website is for informational purposes only. Any discrepancies with official documents are unintentional.</p>
+      </div>
+    </div>
+  </footer>
 
-  const supabase = createClient("https://your-project.supabase.co", "your-anon-key");
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>AOS.init();</script>
+  <script>
+    document.querySelector('.hamburger')?.addEventListener('click', () => {
+      document.querySelector('.nav-links')?.classList.toggle('active');
+    });
 
-  const loginBtn = document.getElementById('loginBtn');
-  const loginModal = document.getElementById('loginModal');
-  const closeBtn = document.querySelector('.close-btn');
-
-  loginBtn?.addEventListener('click', () => loginModal.style.display = 'flex');
-  closeBtn?.addEventListener('click', () => loginModal.style.display = 'none');
-  window.addEventListener('click', (e) => {
-    if (e.target === loginModal) loginModal.style.display = 'none';
-  });
-
-  document.getElementById('adminLoginForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-
-    // Get user by email
-    const { data, error } = await supabase
-      .from('admins')
-      .select('email, allowedclasses, password_hash')
-      .eq('email', email)
-      .single();
-
-    if (error || !data) return alert("Invalid credentials");
-
-    // Compare password hash
-    const valid = await bcrypt.compare(password, data.password_hash);
-    if (!valid) return alert("Invalid credentials");
-
-    sessionStorage.setItem('adminEmail', data.email);
-    sessionStorage.setItem('allowedClasses', data.allowedclasses);
-    window.location.href = 'dashboard.html';
-  });
-</script>
-    <script src="script.js"></script>
+    document.getElementById("viewMoreBtn")?.addEventListener("click", function (e) {
+      e.preventDefault();
+      document.querySelectorAll(".hidden-photo").forEach(el => el.classList.add("show"));
+      this.style.display = "none";
+    });
+  </script>
+  <script src="script.js"></script>
 </body>
 </html>
