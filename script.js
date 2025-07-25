@@ -1,14 +1,13 @@
 import { db } from './firebase-config.js';
 import { collection, getDocs, query, where } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-
-const form = document.getElementById('resultForm');
+const form = document.getElementById('publicResultForm');
 const resultDisplay = document.getElementById('resultDisplay');
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const classVal = document.getElementById('classInput').value;
-  const rollVal = document.getElementById('rollInput').value;
-  const examVal = document.getElementById('examInput').value;
+ const classVal = document.getElementById('classSelect').value;
+const rollVal = document.getElementById('rollNumber').value;
+const examVal = document.getElementById('examSelect').value;
 
   const q = query(collection(db, "results"), where("class", "==", classVal), where("roll", "==", rollVal), where("exam", "==", examVal));
   const snapshot = await getDocs(q);
