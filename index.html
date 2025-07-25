@@ -133,18 +133,17 @@
       </div>
     </div>
   </section>
-
-  <!-- Results -->
+ <!-- Results Section for Public Users -->
   <section class="results" id="results">
     <div class="container">
       <h2>Exam Results</h2>
       <div class="results-container">
         <div class="result-search">
           <h3>Check Your Result</h3>
-          <form id="resultForm">
+          <form id="publicResultForm">
             <div class="form-group">
               <label for="exam">Select Exam:</label>
-              <select id="exam" required>
+              <select id="examSelect" required>
                 <option value="">-- Select Exam --</option>
                 <option value="First Semester">First Semester Exam 2025</option>
                 <option value="Second Semester">Second Semester Exam 2025</option>
@@ -156,7 +155,7 @@
             </div>
             <div class="form-group">
               <label for="Class">Class:</label>
-              <select id="Class" required>
+              <select id="classSelect" required>
                 <option value="">-- Select Class --</option>
                 <option value="Pre Nursery">Pre Nursery</option>
                 <option value="Nursery">Nursery</option>
@@ -175,7 +174,7 @@
             </div>
             <div class="form-group">
               <label for="roll">Roll Number:</label>
-              <input type="text" id="roll" placeholder="Enter your roll number" required />
+              <input type="text" id="rollNumber" placeholder="Enter your roll number" required />
             </div>
             <button type="submit" class="btn">Check Result</button>
           </form>
@@ -186,7 +185,6 @@
       </div>
     </div>
   </section>
-
   <!-- Footer -->
   <footer>
     <div class="container">
@@ -251,22 +249,7 @@
   </div>
 </div>
   <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-  <script>AOS.init();</script>
-  <script>
-    document.querySelector('.hamburger')?.addEventListener('click', () => {
-      document.querySelector('.nav-links')?.classList.toggle('active');
-    });
-
-    document.getElementById("viewMoreBtn")?.addEventListener("click", function (e) {
-      e.preventDefault();
-      document.querySelectorAll(".hidden-photo").forEach(el => el.classList.add("show"));
-      this.style.display = "none";
-    });
-  </script>
-  <!-- Add these right before your script.js -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="script.js"></script>
+    <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="login.js"></script>
 </body>
 </html>
