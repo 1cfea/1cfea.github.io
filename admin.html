@@ -61,5 +61,11 @@ document.getElementById("resultForm").addEventListener("submit", async (e) => {
   }
 });
 </script>
-</body>
+document.addEventListener('DOMContentLoaded', () => {
+  const email = sessionStorage.getItem("adminEmail");
+  if (email) {
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("entrySection").style.display = "block";
+  }
+});</body>
 </html>
