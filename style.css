@@ -191,6 +191,7 @@ nav .container {
     font-size: 1.5rem;
     color: var(--secondary-color);
 }
+
 .hero {
   background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
               url('./images/Cover_cfea.png') no-repeat center center/cover;
@@ -201,6 +202,13 @@ nav .container {
   justify-content: center;
   text-align: center;
   padding: 0 20px;
+  position: relative;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
 }
 
 .hero-content h2 {
@@ -214,10 +222,7 @@ nav .container {
 .hero-content p {
   font-size: 1.2rem;
   margin-bottom: 25px;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  color: #f0f0f0;
+  color: #eee;
 }
 
 .hero-content .btn {
